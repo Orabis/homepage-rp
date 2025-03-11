@@ -1,6 +1,6 @@
 @import "bootstrap/scss/bootstrap";
 $primary-color: #3498db;
-$secondary-color: #2ecc71;
+$secondary-color: #ffffff;
 $font-stack: 'Quicksand', sans-serif;
 
 body {
@@ -9,4 +9,30 @@ body {
   color: #ffffff;
   margin: 0;
   padding: 0;
+}
+
+.social-icon{
+  width: 50px;
+  height: auto;
+  margin: 0 5px;
+}
+
+.icon{
+  width: 20px;
+  height: auto;
+  margin-left: 5px;
+}
+@keyframes infinite-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.btn:hover .icon{
+  filter: invert(100%) sepia(100%) hue-rotate(180deg);
+}
+.btn:hover .icon-gear{
+  animation: infinite-rotate 5s linear infinite;
 }
