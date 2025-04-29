@@ -36,3 +36,20 @@ body {
 .btn:hover .icon-gear{
   animation: infinite-rotate 5s linear infinite;
 }
+.card-img-top {
+  width: 70%;
+  height: 80%;
+  object-fit: cover;
+}
+.img-fluid{
+  width: 100%;
+  height: 80%;
+  object-fit: cover;
+}
+.img-doc{
+  width: 60%;
+  height: 60%;
+  object-fit: cover;
+  border-radius: 10px;
+  
+}

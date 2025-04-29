@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="scss/styles.scss"> 
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/phantomthief.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+    </style>
+    <title>Orabis Homepage</title>
+  </head>
+  <body>
+    <!DOCTYPE html>
+    <html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Organisation du projet</title>
+    </head>
+    <body class="container m-5 mx-auto text-justify">
+      <a class="btn btn-outline-light" href="https://orabis.fr">RETOUR</a><h1>Organisation du projet</h1>
+      <h2>Situation</h2>
+      <p>Dans le cadre de mon BTS SIO option SLAM, j’ai réalisé seul un projet nommé StockSeeker, une application web de gestion de stock.</p>
+      <p>Ce projet s’inscrit dans un contexte fictif mais réaliste : celui d'une entreprise ayant besoin d’un outil moderne, rapide et réactif pour gérer efficacement ses produits et entrepôts.</p>
+      <p>L'objectif principal était de concevoir un site en Single Page Application (SPA), avec une interface fluide, intuitive et rapide d’utilisation, tout en respectant les contraintes technologiques du BTS.</p>
+  
+      <h2>Étude des solutions</h2>
+      <p>Dès le départ, mon cahier des charges était clair :</p>
+      <ul>
+          <li>L'application devait permettre de créer, modifier et supprimer des entrepôts et des produits.</li>
+          <li>Elle devait inclure un système de gestion des utilisateurs.</li>
+          <li>Les ajouts de produits devaient être rapides, pour garantir une utilisation fluide au quotidien.</li>
+          <li>L’interface devait mettre en avant les informations essentielles : produits en stock, seuils critiques, alertes visuelles en cas de stock insuffisant.</li>
+      </ul>
+      <p>Pour cela, j’ai fait le choix d’une architecture REST, qui permet de séparer clairement le front-end du back-end tout en assurant une communication efficace entre les deux.</p>
+      <p>Le back-end serait développé en Django, couplé avec Django REST Framework, une solution puissante et flexible pour exposer des API RESTful. Django offre de nombreux avantages :</p>
+      <ul>
+          <li>Une structure robuste et bien organisée.</li>
+          <li>Une interface d’administration intégrée pour les tests.</li>
+          <li>Une grande communauté, facilitant la résolution des problèmes.</li>
+          <li>Une bonne sécurité dès l’installation.</li>
+      </ul>
+      <p>Enfin, pour la base de données, mon choix s’est porté sur PostgreSQL, une solution open source, fiable et performante, très adaptée aux traitements de données complexes.</p>
+  
+      <h2>Contraintes</h2>
+      <p>Ce projet a été réalisé avec un budget nul, en respectant l’environnement technologique imposé par le BTS SIO :</p>
+      <ul>
+          <li>Utilisation de logiciels libres ou gratuits.</li>
+          <li>Aucune dépense autorisée.</li>
+          <li>Respect du calendrier scolaire avec une date butoir imposée.</li>
+      </ul>
+      <p>Je me suis appuyé sur des outils comme :</p>
+      <ul>
+          <li>Django et Django REST Framework pour le back-end.</li>
+          <li>PostgreSQL pour la gestion des données.</li>
+          <li>Un client SPA léger pour le front-end (détaillé dans la partie "Réalisation").</li>
+      </ul>
+      <p>L’ensemble du projet devait rester simple à installer, rapide à utiliser, et suffisamment ergonomique pour être utilisable même par des personnes non techniques.</p>  
+      <hr class="my-4 w-50"/>
+      <p>Pour la partie back-end, j’ai choisi Django avec son extension Django REST Framework (DRF) afin de créer une API RESTful structurée, sécurisée et évolutive. Django offre une grande rapidité de mise en œuvre grâce à ses modèles et sa gestion de l’authentification intégrée.</p>
+      <h2>Routing (urls.py)</h2>
+      <p>Je commence par organiser mes routes.</p>
+      <p>J’utilise le routeur de Django REST Framework qui me permet de déclarer automatiquement toutes les routes CRUD (Create, Read, Update, Delete) pour mes vues.</p>
+      <p>J’ajoute également une route spécifique pour l’obtention et la mise à jour des tokens JWT, indispensable pour l’authentification sécurisée des utilisateurs.</p>
+      <img class="img-doc" src="/route.png" alt="Capture d'écran de urls.py">
+      <hr class="my-4 w-50"/>
+      <h2>Modélisation (models.py)</h2>
+      <p>J’utilise le modèle User natif de Django pour gérer les comptes, puis je crée deux modèles principaux :</p>
+      <ul>
+          <li>Product</li>
+          <li>Warehouse</li>
+      </ul>
+      <p>Chaque produit est rattaché à un utilisateur via une clé étrangère, et peut être stocké dans plusieurs entrepôts grâce à une relation many-to-many.</p>
+      <p>Cela permet :</p>
+      <ul>
+          <li>à un utilisateur de gérer plusieurs produits,</li>
+          <li>à un produit d’être présent dans plusieurs entrepôts pour une gestion plus souple du stockage.</li>
+      </ul>
+      <img class="img-doc" src="/models.png" alt="Capture d'écran de models.py">
+      <hr class="my-4 w-50"/>
+      <h2>Vues (views.py)</h2>
+      <p>J’utilise des vues basées sur ViewSets pour centraliser les opérations CRUD.</p>
+      <p>À chaque appel, je vérifie si l’utilisateur est authentifié via son token JWT grâce à la permission IsAuthenticated.</p>
+      <p>J’utilise :</p>
+      <ul>
+          <li>des querysets globaux pour accéder aux données,</li>
+          <li>une méthode différente selon le type d'action (create, update, destroy).</li>
+      </ul>
+      <p>Pour destroy, il suffit de supprimer l’objet, mais pour create et update, je passe par les serializers pour effectuer des validations métier précises.</p>
+      <img class="img-doc" src="/viewProduitEntrepot.png" alt="Capture d'écran de ProductViewSet et WarehouseViewSet">
+      <hr class="my-4 w-50"/>
+      <h2>Serializers – logique métier</h2>
+      <p>Un serializer sert à valider et transformer les données entre Python et JSON.</p>
+      <p>Dans mon ProductSerializer :</p>
+      <ul>
+          <li>La méthode validate() vérifie que tous les champs essentiels sont présents.</li>
+          <li>Par exemple, si "alerte activée" est cochée, une quantité seuil doit obligatoirement être fournie.</li>
+          <li>Si des entrepôts sont associés à un produit, la quantité totale disponible est contrôlée.</li>
+      </ul>
+      <p>En cas de problème, je renvoie une ValidationError explicite en JSON.</p>
+      <hr class="my-4 w-50"/>
+      <h2>Création / Mise à jour – atomicité</h2>
+      <p>Lors de la création (create) et de la mise à jour (update) d’un produit ou entrepôt, j’utilise un bloc @transaction.atomic. Cela garantit que toutes les modifications sont :</p>
+      <ul>
+          <li>enregistrées ensemble si tout se passe bien,</li>
+          <li>annulées d’un coup en cas d’erreur, évitant les incohérences.</li>
+      </ul>
+      <p>Django est en autocommit par défaut. Ici, j’ai eu besoin de transactions explicites car je dois gérer la quantité actuelle et la capacité restante dans plusieurs entrepôts :</p>
+      <p>Par exemple, si je mets à jour une quantité à 1000 alors qu’elle était à 100, je ne veux pas l’additionner, mais bien la remplacer.</p>
+      <img class="img-doc" src="/serialzers-product.png" alt="Capture d'écran de ProductSerializer">
+      <hr class="my-4 w-50"/>
+      <h2>Stock bas & validation continue</h2>
+      <p>À chaque appel API, je vérifie si un produit est en stock bas (inférieur au seuil défini).</p>
+      <p>Si c’est le cas, l’attribut low_stock devient True, ce qui est ensuite transmis au front pour afficher une alerte visuelle.</p>
+      <p>Je répète une logique similaire pour les entrepôts : validation, transaction, mise à jour.</p>
+      <hr class="my-4 w-50"/>
+      <h2>Sécurité (settings.py)</h2>
+      <p>J’intègre plusieurs mesures de sécurité dans mon settings.py :</p>
+      <ul>
+          <li>configuration du HTTPS,</li>
+          <li>sécurisation des tokens JWT,</li>
+          <li>gestion du CORS pour autoriser uniquement mon front Vue.js à communiquer avec l’API (Cross-Origin Resource Sharing = sécurité entre domaines différents).</li>
+      </ul>
+      <hr class="my-4 w-50"/>
+      <h2>Partie Front-End – Vue.js & PrimeVue</h2>
+      <h3>Vue.js, un choix moderne</h3>
+      <p>Pour créer une application réactive et moderne, j’ai utilisé Vue.js, un framework JavaScript progressif.</p>
+      <p>Il est idéal pour :</p>
+      <ul>
+          <li>Créer des composants réactifs facilement,</li>
+          <li>Organiser les vues logiquement avec Vue Router,</li>
+          <li>Gérer les états et formulaires simplement.</li>
+      </ul>
+      <p>C’est un excellent compromis entre productivité et performance, parfait pour une SPA.</p>
+      <hr class="my-4 w-50"/>
+      <h3>Stack front</h3>
+      <p>Voici les outils que j’ai utilisés pour renforcer Vue :</p>
+      <ul>
+          <li>Vite.js : création rapide de projet avec hot-reload et build ultra rapide.</li>
+          <li>PrimeVue : bibliothèque UI complète pour Vue, avec boutons, formulaires, tableaux prêts à l’emploi.</li>
+          <li>Chart.js : pour les graphiques dynamiques (visualisation du stock, seuils critiques…).</li>
+          <li>Axios : pour les requêtes HTTP vers mon API.</li>
+          <li>js-cookie : gestion des cookies côté client (ex : sauvegarde du JWT).</li>
+      </ul>
+      <hr class="my-4 w-50"/>
+      <h3>Arborescence des vues</h3>
+      <img class="img-doc" src="/architectureproj.png" alt="Capture d'écran de la structure des vues dans src/views">
+      <h3>Dashboard.vue (Accueil)</h3>
+      <ul>
+          <li>Affiche tous les produits et entrepôts.</li>
+          <li>Montre les alertes de stock critique.</li>
+          <li>Barre d’ajout rapide de produit.</li>
+      </ul>
+      <h3>Login.vue</h3>
+      <ul>
+          <li>Vue utilisée pour la connexion et la création de compte.</li>
+          <li>Automatiquement appelée si un token expire ou est absent.</li>
+      </ul>
+      <h3>Products.vue</h3>
+      <ul>
+          <li>Tableau des produits.</li>
+          <li>Ajout, édition et suppression d’un ou plusieurs produits.</li>
+      </ul>
+      <h3>Warehouses.vue</h3>
+      <ul>
+          <li>Tableau des entrepôts.</li>
+          <li>Ajout, édition et suppression d’un ou plusieurs entrepôts.</li>
+      </ul>
+      <hr class="my-4 w-50"/>
+      <h3>Authentification (useAuth.js)</h3>
+      <p>J’ai créé un composable useAuth() qui :</p>
+      <ul>
+          <li>Vérifie la validité du token JWT.</li>
+          <li>Déconnecte l’utilisateur si nécessaire (suppression du cookie, réinitialisation des données).</li>
+          <li>Utilise ref() pour que les valeurs soient réactives à tout moment.</li>
+      </ul>
+      <img class="img-doc" src="/isauth.png" alt="Capture d'écran de useAuth.js">
+      <hr class="my-4 w-50"/>
+      <h3>Requêtes vers l’API (api.js)</h3>
+      <p>Je centralise tous les appels API dans api.js :</p>
+      <ul>
+          <li>baseURL dynamique via une variable .env.</li>
+          <li>Ajout automatique du token dans les headers.</li>
+          <li>Timeout et gestion d’erreurs intégrés.</li>
+      </ul>
+      <p>Export de fonctions (login, createUser, getProducts, etc.) pour simplifier leur utilisation dans les composants Vue.</p>
+      <img class="img-doc" src="/apiasync.png" alt="Capture d'écran de api.js">
+      <hr class="my-4 w-50"/>
+      <h2>Conclusion</h2>
+      <p>Ce projet m’a permis de :</p>
+      <ul>
+          <li>Maîtriser un stack fullstack moderne (Vue.js + Django REST),</li>
+          <li>Implémenter des transactions atomiques, de la validation métier avancée,</li>
+          <li>Créer une SPA performante et responsive avec une gestion de stock en temps réel.</li>
+      </ul>
+      <p>J’ai particulièrement appris à faire le lien entre interface utilisateur, logique métier, et cohérence base de données, tout en sécurisant l’authentification avec JWT et en optimisant la fluidité des échanges front/back.</p>
+      <hr class="my-4 w-50"/>
+      <h2>Annexes :</h2>
+      <p>Site web : <strong><a href="https://stock.orabis.fr" target="_blank">stock.orabis.fr</a></strong></p>
+      <p>Compte invité + mot de passe : invite1 </p>
+      <p>Github Backend : <strong><a href="https://github.com/Orabis/E6-BStockSeeker" target="_blank">github.com/Orabis/E6-BStockSeeker</a></strong></p>
+      <p>Github Front : <strong><a href="https://github.com/Orabis/E6-FStockSeeker" target="_blank">github.com/Orabis/E6-FStockSeeker</a></strong></p>
+      <hr class="my-4 w-50"/>
+      <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+              <img src="/entrepot.png" class="img-fluid" alt="Capture d'écran de ProductViewSet et WarehouseViewSet">
+              <p class="text-center">Page d'enregistrements des entrepots</p>
+            </div>
+            <div class="col-md-4">
+                <img src="/dashboard.png" class="img-fluid" alt="Capture d'écran de models.py">
+                <p class="text-center">Page d'accueil du site une fois connecté</p>
+            </div>
+            <div class="col-md-4">
+                <img src="/produits.png" class="img-fluid" alt="Capture d'écran de ProductViewSet et WarehouseViewSet">
+                <p class="text-center">Page d'enregistrements des produits</p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <img src="/swagger.png" class="img-fluid" alt="Capture d'écran de swagger">
+                <p class="text-center">Routes de mes apis avec swagger</p>
+            </div>
+            <div class="col-md-4">
+                <img src="/Rest-API-model.jpg" class="img-fluid" alt="Capture d'écran du fonctionnement du principe REST API">
+                <p class="text-center">Fonctionnement d'un REST API</p>
+            </div>
+            <div class="col-md-4">
+                <img src="/async.png" class="img-fluid" alt="Capture d'écran du fonctionnement d'une requêtes asynchrone">
+                <p class="text-center">Fonctionnement de l'asynchrone en JS</p>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container m-5 mx-auto text-center">
+          <p>© 2025 Orabis</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.8.1/tsparticles.bundle.min.js"></script>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+  </html>
