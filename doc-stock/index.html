@@ -10,14 +10,6 @@
     </style>
     <title>Orabis Homepage</title>
   </head>
-  <body>
-    <!DOCTYPE html>
-    <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Organisation du projet</title>
-    </head>
     <body class="container m-5 mx-auto text-justify">
       <a class="btn btn-outline-light" href="https://orabis.fr">RETOUR</a><h1>Organisation du projet</h1>
       <h2>Situation</h2>
@@ -42,7 +34,6 @@
           <li>Une bonne sécurité dès l’installation.</li>
       </ul>
       <p>Enfin, pour la base de données, mon choix s’est porté sur PostgreSQL, une solution open source, fiable et performante, très adaptée aux traitements de données complexes.</p>
-  
       <h2>Contraintes</h2>
       <p>Ce projet a été réalisé avec un budget nul, en respectant l’environnement technologique imposé par le BTS SIO :</p>
       <ul>
@@ -71,6 +62,9 @@
           <li>Product</li>
           <li>Warehouse</li>
       </ul>
+      <img class="img-doc" src="/umlstock.png" alt="graphique UML de l'application">
+      <p>Voici le schéma UML de mon application, représentant les relations entre les différents modèles.</p>
+      <hr class="my-4 w-50"/>
       <p>Chaque produit est rattaché à un utilisateur via une clé étrangère, et peut être stocké dans plusieurs entrepôts grâce à une relation many-to-many.</p>
       <p>Cela permet :</p>
       <ul>
@@ -90,7 +84,7 @@
       <p>Pour destroy, il suffit de supprimer l’objet, mais pour create et update, je passe par les serializers pour effectuer des validations métier précises.</p>
       <img class="img-doc" src="/viewProduitEntrepot.png" alt="Capture d'écran de ProductViewSet et WarehouseViewSet">
       <hr class="my-4 w-50"/>
-      <h2>Serializers – logique métier</h2>
+      <h2>Serializers</h2>
       <p>Un serializer sert à valider et transformer les données entre Python et JSON.</p>
       <p>Dans mon ProductSerializer :</p>
       <ul>
@@ -241,4 +235,4 @@
     <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.8.1/tsparticles.bundle.min.js"></script>
     <script type="module" src="/src/main.js"></script>
   </body>
-  </html>
+</html>
