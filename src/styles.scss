@@ -37,8 +37,6 @@ body {
   animation: infinite-rotate 5s linear infinite;
 }
 .card-img-top {
-  width: 70%;
-  height: 80%;
   object-fit: cover;
 }
 .img-fluid{
@@ -53,4 +51,12 @@ body {
   object-fit: cover;
   border-radius: 10px;
   
+}
+.container-documentation{
+  margin-top: 5%;
+  margin-left: 20%;
+  margin-right: 20%;
+}
+.container-documentation p{
+  text-align: justify;
 }

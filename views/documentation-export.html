@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="fr">
+  <body class="container m-5 mx-auto text-justify">
+    <div class="container-documentation">
+      <a class="btn btn-outline-light" href="/">RETOUR</a><h1>Organisation du projet</h1>
+      <h2>Situation</h2>
+      <p>Dans le cadre de mon BTS SIO option SLAM, j’ai réalisé seul un projet nommé ExportGitlab, une application web permettant d’exporter des issues GitLab au format PDF.</p>
+      <p>Ce projet a été développé à la demande de l’Université de Strasbourg, dans un contexte réel. Il vise à simplifier la récupération, le filtrage et l’export de tickets GitLab dans un format lisible, exploitable aussi bien par les développeurs que les chefs de projet.</p>
+      <p>L’objectif principal était de concevoir un outil simple, intuitif, sécurisé, utilisable en interne, tout en respectant les contraintes d’authentification imposées par l’infrastructure universitaire.</p>
+      
+      <h2>Étude des solutions</h2>
+      <p>Le cahier des charges imposait plusieurs fonctionnalités clés :</p>
+      <ul>
+          <li>Connexion sécurisée via CAS (Central Authentication Service).</li>
+          <li>Sélection d’un projet GitLab via son ID.</li>
+          <li>Choix des issues à exporter (toutes ou par identifiants).</li>
+          <li>Export automatique en fichier PDF.</li>
+          <li>Application utilisable uniquement en réseau interne.</li>
+      </ul>
+      <p>Le choix de Django s’est imposé pour sa robustesse et sa compatibilité avec des outils comme WKHTMLTOPDF. Le front-end utilise Vue.js en CDN pour une interface légère et réactive.</p>
+      
+      <h3>Technologies utilisées :</h3>
+      <ul>
+          <li>Django (Python) pour la partie back-end.</li>
+          <li>Vue.js en CDN pour le front-end.</li>
+          <li>WKHTMLTOPDF pour la génération de fichiers PDF.</li>
+          <li>CAS pour l’authentification SSO.</li>
+      </ul>
+
+      <h3>Contraintes techniques :</h3>
+      <ul>
+          <li>Authentification SSO obligatoire via CAS.</li>
+          <li>Pas d’usage de token GitLab personnel.</li>
+          <li>Aucune dépendance commerciale.</li>
+          <li>Accès limité au réseau interne de l’université.</li>
+      </ul>
+      <hr class="my-4 w-50"/>
+      <h2>Partie back-end avec Django</h2>
+      <h3>Modèles (models.py)</h3>
+      <p>Un modèle Page simple avec un champ token_gitlab (nullable), et une relation ManyToMany vers un ou plusieurs projets. Le modèle Project contient les champs gitlab_id, name, url.</p>
+      <img class="img-doc" src="/modelsexport.png" alt="Modèles Django">
+      <hr class="my-4 w-50"/>
+      <h3>Routes et vues (views.py)</h3>
+      <p>Plusieurs routes sont disponibles. Les principales sont :</p>
+      <ul>
+          <li>/profile : page profil utilisateur.</li>
+          <li>/projects : affiche la liste des projets disponibles.</li>
+          <li>/projects/&lt;id&gt;/issues : permet d’exporter les issues via leur identifiant.</li>
+      </ul>
+      <img class="img-doc" src="/urls.png" alt="Routes et vues Django">
+      <hr class="my-4 w-50"/>
+      <h3>Connexion GitLab (gitlab.py)</h3>
+      <p>Ce fichier initialise la connexion GitLab grâce à la fonction gl_connexion. Celle-ci définit l’URL (gitlab.com) et utilise le token privé de l’utilisateur.</p>
+      <p>Ensuite, gl.auth() valide l’authentification et retourne un objet gl contenant les outils nécessaires pour faire des requêtes GitLab.</p>
+      <img class="img-doc" src="/glconnexion.png" alt="Connexion GitLab">
+      <hr class="my-4 w-50"/>
+      <h3>Décorateurs (decorators.py)</h3>
+      <p>Un décorateur valid_auth est défini pour vérifier que l’utilisateur est bien connecté à GitLab. En cas d’échec, une exception GitlabAuthenticationError est levée et empêche l’exécution de la vue.</p>
+      <img class="img-doc" src="/decorators.png" alt="Décorateurs">
+      <hr class="my-4 w-50"/>
+      <h3>Vue principale : list_all_projects (homepage)</h3>
+      <p>Cette vue est protégée par les décorateurs @login_required et @valid_auth. Elle gère deux méthodes :</p>
+      <ul>
+          <li>GET : filtre les projets selon un nom donné.</li>
+          <li>POST : récupère un projet depuis un ID GitLab envoyé via formulaire.</li>
+      </ul>
+      <p>Le résultat est paginé avec l’outil de pagination de Django, puis renvoyé via render() à la page HTML avec la variable page_obj.</p>
+      <img class="img-doc" src="/listallproject.png" alt="Vue principale Django">
+      <hr class="my-4 w-50"/>
+      <h3>Vue download_report_issues</h3>
+      <p>Cette vue gère le téléchargement des issues sélectionnées. Elle récupère le projet (ou renvoie une erreur 404 si introuvable), puis les issues cochées via le champ checkbox_issues.</p>
+      <img class="img-doc" src="/downloadissues.png" alt="Vue download_report_issues">
+      <hr class="my-4 w-50"/>
+      <p>On commence par vérifier si une issue a été cochée. Si oui, pour chaque issue sélectionnée, on appelle la fonction make_data pour récupérer le titre et la description au format HTML. Ces informations sont ajoutées à issues_data qui contient l'ID, le titre, la description et le nom du projet. Ensuite, on génère le rendu HTML via un template, qu'on convertit en PDF avec WKHTMLTOPDF, en gérant les exceptions. La réponse sera un PDF nommé selon le projet, avec les issues numérotées.</p>
+      <img class="img-doc" src="/generatepdf.png" alt="Vue download_report_issues 2">
+      <hr class="my-4 w-50"/>
+      <h3>Tests unitaires</h3>
+      <p>Des tests ont été écrits pour valider les fonctions critiques interagissant avec l’API GitLab, en simulant les appels via unittest.mock (patch et Mock) pour éviter toute dépendance réelle au réseau ou à un token actif.</p>
+      <img class="img-doc" src="/testspython.png" alt="Tests unitaires">
+      <hr class="my-4 w-50"/>
+      <h2>Partie front-end (templates Django)</h2>
+      <h3>Arborescence des templates</h3>
+      <p>Toutes les pages héritent de base.html, qui contient :</p>
+      <ul>
+          <li>Le chargement des fichiers CSS/JS.</li>
+          <li>La structure du site (navbars, styles...).</li>
+          <li>Les blocs {% block %} permettant d’injecter du contenu spécifique dans chaque page.</li>
+      </ul>
+      <img class="img-doc" src="/base.png" alt="exemple de base.html">
+      <p>L'Arborescence des templates ressemble à ça :</p>
+      <img class="img-doc" src="/arborescencetempalte.png" alt="Arborescence des templates">
+      <hr class="my-4 w-50"/>
+      <h3>Exemple projects_list.html</h3>
+      <p>Un formulaire y est présent, protégé par un {% csrf_token %}. Il permet de saisir l’ID d’un projet GitLab à ajouter.</p>
+      <img class="img-doc" src="/form.png" alt="Exemple projects_list.html">
+      <hr class="my-4 w-50"/>
+      <h3>Template html_to_pdf_output.html</h3>
+      <p>Ce fichier sert à générer le HTML à convertir en PDF. Il affiche chaque issue avec ses champs name, title, id, description, à l’aide d’une boucle.</p>
+      <img class="img-doc" src="/issueshtml.png" alt="Template html_to_pdf_output.html">
+      <hr class="my-4 w-50"/>
+      <h2>Conclusion</h2>
+      <p>Ce projet m’a permis de :</p>
+      <ul>
+          <li>Mettre en place un système d’authentification CAS dans un environnement sécurisé.</li>
+          <li>Développer une application web complète en fullstack avec Django et Vue.js.</li>
+          <li>Interfacer proprement un back-end Python avec l’API GitLab en respectant les bonnes pratiques d’intégration.</li>
+          <li>Générer dynamiquement des documents PDF depuis des templates HTML.</li>
+          <li>Structurer un front-end basé sur les templates Django tout en maintenant une interface claire et réactive.</li>
+      </ul>
+      <p>J’ai particulièrement renforcé mes compétences sur la gestion de projets réels, en assurant la cohérence entre authentification, logique métier, intégration d’API tierces et restitution soignée des données pour les utilisateurs finaux.</p>
+      <hr class="my-4 w-50"/>
+      <h2>Annexes :</h2>
+        <p>Site web : <strong><a href="https://export.orabis.fr" target="_blank">export.orabis.fr</a></strong></p>
+        <p>Github : <strong><a href="https://github.com/Orabis/export-gitlab" target="_blank">github.com/Orabis/export-gitlab</a></strong></p>
+        <hr class="my-4 w-50"/>
+        <div class="container">
+          <div class="row">
+              <div class="col-md-4">
+                <img src="/pageprojet.png" class="img-fluid" alt="Capture d'écran de la page de projet">
+                <p class="text-center">Page d'affichages des projets</p>
+              </div>
+              <div class="col-md-4">
+                  <img src="/telechargerissue.png" class="img-fluid" alt="Capture d'écran de la page télécharger les issues">
+                  <p class="text-center">Page de téléchargement des issues</p>
+              </div>
+              <div class="col-md-4">
+                  <img src="/pdfrendu.png" class="img-fluid" alt="Capture d'écran du rendu pdf">
+                  <p class="text-center">Rendu pdf des issues</p>
+              </div>
+            </div>
+          </div>
+    </div>
+  </body>

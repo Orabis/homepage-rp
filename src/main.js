@@ -1,5 +1,37 @@
 import './styles.scss'
 import * as bootstrap from 'bootstrap'
+const spaContent = document.getElementById("spa-content");
+const defaultContent = spaContent.innerHTML; // snapshot initial
+
+async function loadPage(path) {
+  const res = await fetch(path);
+  if (!res.ok) {
+    spaContent.innerHTML = "<h1>Erreur de chargement</h1>";
+    return;
+  }
+  const html = await res.text();
+  spaContent.innerHTML = html;
+}
+
+function router() {
+  const hash = location.hash;
+
+  if (!hash || hash === "#/") {
+    spaContent.innerHTML = defaultContent;
+    return;
+  }
+
+  if (hash === "#/documentation-stock") {
+    loadPage("/views/documentation-stock.html");
+  } else if (hash === "#/documentation-export") {
+    loadPage("/views/documentation-export.html");
+  } else {
+    spaContent.innerHTML = "<h1>404 - Page non trouvée</h1>";
+  }
+}
+
+window.addEventListener("hashchange", router);
+window.addEventListener("load", router);
 
 (async () => {
     await loadFull(tsParticles);
