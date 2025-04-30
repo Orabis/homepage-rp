@@ -14,25 +14,34 @@ async function loadPage(path) {
 }
 
 function router() {
-  const hash = location.hash;
+  const path = window.location.pathname;
 
-  if (!hash || hash === "#/") {
+  if (path === "/") {
     spaContent.innerHTML = defaultContent;
     return;
   }
 
-  if (hash === "#/documentation-stock") {
+  if (path === "/documentation-stock") {
     loadPage("/views/documentation-stock.html");
-  } else if (hash === "#/documentation-export") {
+  } else if (path === "/documentation-export") {
     loadPage("/views/documentation-export.html");
   } else {
     spaContent.innerHTML = "<h1>404 - Page non trouvée</h1>";
   }
 }
 
-window.addEventListener("hashchange", router);
-window.addEventListener("load", router);
+// Gestion des clics sur les liens
+document.addEventListener('click', (e) => {
+  if (e.target.tagName === 'A' && e.target.getAttribute('href').startsWith('/')) {
+    e.preventDefault();
+    const path = e.target.getAttribute('href');
+    window.history.pushState({}, '', path);
+    router();
+  }
+});
 
+window.addEventListener("popstate", router);
+window.addEventListener("load", router);
 (async () => {
     await loadFull(tsParticles);
   
