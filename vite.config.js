@@ -1,17 +1,16 @@
 import { defineConfig } from 'vite';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { resolve } from 'path';
 
 export default defineConfig({
-  plugins:[
-    viteStaticCopy({
-      targets: [
-        {
-          src: 'views/*',
-          dest: 'views'
-        }
-      ]
-    })
-  ],
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        documentation1: resolve(__dirname, 'views/documentation-export.html'),
+        documentation2: resolve(__dirname, 'views/documentation-stock.html'),
+      },
+    },
+  },
   server: {
     port: 5001,
     host: "0.0.0.0",
