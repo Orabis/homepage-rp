@@ -1,47 +1,6 @@
 import './styles.scss'
 import * as bootstrap from 'bootstrap'
-const spaContent = document.getElementById("spa-content");
-const defaultContent = spaContent.innerHTML; // snapshot initial
 
-async function loadPage(path) {
-  const res = await fetch(path);
-  if (!res.ok) {
-    spaContent.innerHTML = "<h1>Erreur de chargement</h1>";
-    return;
-  }
-  const html = await res.text();
-  spaContent.innerHTML = html;
-}
-
-function router() {
-  const path = window.location.pathname;
-
-  if (path === "/") {
-    spaContent.innerHTML = defaultContent;
-    return;
-  }
-
-  if (path === "/documentation-stock") {
-    loadPage("/views/documentation-stock.html");
-  } else if (path === "/documentation-export") {
-    loadPage("/views/documentation-export.html");
-  } else {
-    spaContent.innerHTML = "<h1>404 - Page non trouvée</h1>";
-  }
-}
-
-// Gestion des clics sur les liens
-document.addEventListener('click', (e) => {
-  if (e.target.tagName === 'A' && e.target.getAttribute('href').startsWith('/')) {
-    e.preventDefault();
-    const path = e.target.getAttribute('href');
-    window.history.pushState({}, '', path);
-    router();
-  }
-});
-
-window.addEventListener("popstate", router);
-window.addEventListener("load", router);
 (async () => {
     await loadFull(tsParticles);
   
