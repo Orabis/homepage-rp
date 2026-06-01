@@ -1,5 +1,6 @@
-import './styles.scss'
-import * as bootstrap from 'bootstrap'
+import './styles.css'
+import { tsParticles } from "@tsparticles/engine";
+import { loadFull } from "tsparticles";
 
 (async () => {
     await loadFull(tsParticles);

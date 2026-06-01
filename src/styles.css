@@ -1,10 +1,7 @@
-@import "bootstrap/scss/bootstrap";
-$primary-color: #3498db;
-$secondary-color: #ffffff;
-$font-stack: 'Quicksand', sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
 
 body {
-  font-family: $font-stack;
+  font-family: 'Quicksand', sans-serif;
   background-color: #232741;
   color: #ffffff;
   margin: 0;

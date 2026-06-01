@@ -4,118 +4,78 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/phantomthief.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
-    </style>
     <title>Orabis Homepage</title>
   </head>
-  <body class="d-flex flex-column min-vh-100">
+  <body>
     <div id="tsparticles"></div>
-    <div id="spa-content" class="container">
-    <div class="container m-5 mx-auto text-center">
-      <h1>Bienvenue sur <strong>orabis.fr</strong></h1>
-      <h2>Retrouvez ici tous mes projets déployés</h2>
-      <div class="d-flex justify-content-center mt-4">
-        <a href="http://x.com/orabisss" target="_blank">
-          <img class="img-fluid social-icon" src="/x.svg" alt="x.com" >
-        </a>
-        <a href="http://github.com/orabis">
-          <img class="img-fluid social-icon" src="/github.svg" alt="github.com">
-        </a>
-        <a href="https://behance.net/orabis">
-          <img class="img-fluid social-icon" src="/behance.svg" alt="behance.com">
-        </a>
-      </div>
-    </div>
-        <div class="card bg-dark bg-opacity-50 text-white col-sm-6 mb-5 mx-auto">
-            <img class="card-img-fluid" src="/outerline.png" alt="Image du projet">
-            <div class="card-body opacity-100">
-                <h5 class="card-title">Outerline</h5>
-                <p class="card-text">
-                    Un site retracant l'histoire d'outerwilds du début, à la fin de tout. Mon hommage.
-                </p>
-                <a href="https://outerline.orabis.fr" class="btn btn-outline-light">Accéder au site</a>
-            </div>
-        </div>
-        </div>
-    <hr class="my-4 w-50 mx-auto"/>
-    <div class="container m-5 mx-auto row">
-      <div class="col-sm-6 mb-4">
-        <div class="card bg-dark bg-opacity-50 text-white">
-          <img class="card-img-fluid" src="/stockseekerimage.png" alt="Image du projet">
+      <header>
+        <hgroup>
+          <h1>Bienvenue sur orabis.fr</h1>
+          <p>Retrouver tous mes projets déployés</p>
+        </hgroup>
+        <ul>
+          <li>
+            <a href="http://x.com/orabisss" target="_blank" aria-label="X (Twitter)">
+              <img class="social-icon" src="/x.svg" alt="x.com">
+            </a>
+          </li>
+          <li>
+            <a href="http://github.com/orabis" aria-label="GitHub">
+              <img class="social-icon" src="/github.svg" alt="github.com">
+            </a>
+          </li>
+          <li>
+            <a href="https://behance.net/orabis" aria-label="Behance">
+              <img class="social-icon" src="/behance.svg" alt="behance.com">
+            </a>
+          </li>
+        </ul>
+      </header>
+      <main>
+        <div class="projects-grid">
+          <article>
+            <img class="img-fluid" src="/outerline.png" alt="Aperçu Outerline">
+            <h3>Outerline</h3>
+            <p>Un site retracant l'histoire d'outerwilds du début, à la fin de tout. Mon hommage.</p>
+            <a href="https://outerline.orabis.fr">Accéder au site</a>
+          </article>
+          <article>
+            <img class="img-fluid" src="/stockseekerimage.png" alt="Aperçu Stockseeker">
+            <h3>Stockseeker</h3>
+            <p>Outil de gestion de stock. Ajoutez vos entrepôts, créez vos produits et gérez vos stocks en toute simplicité. Profitez d’une interface épurée et intuitive pour une gestion efficace. Suivez vos stocks en temps réel, sans complication.</p>
+            <a href="/documentation-stock">Documentation <img class="icon" src="/pages.svg" alt=""></a>
+          </article>
 
-          <div class="card-body">
-            <h5 class="card-title">Stockseeker</h5>
-            <p class="card-text">
-              Outil de gestion de stock. Ajoutez vos entrepôts, 
-              créez vos produits et gérez vos stocks en toute simplicité. 
-              Profitez d’une interface épurée et intuitive pour une gestion efficace. 
-              Suivez vos stocks en temps réel, sans complication.
-            </p>
-            <a href="/documentation-stock" class="btn btn-outline-light">Documentation<img class="icon" src="/pages.svg" alt=""></a>
-          </div>
+          <article>
+            <img class="img-fluid" src="/exportgit.png" alt="Aperçu E5-ExportGitlab">
+            <h3>E5-ExportGitlab</h3>
+            <p>L'application simplifie l'exportation des issues d'un projet, permettant de les télécharger au format PDF. Le projet a été réalisé pendant ma période de formation à la Direction du Numérique de l'Université de Strasbourg.</p>
+            <a href="/documentation-export">Documentation <img class="icon" src="/pages.svg" alt=""></a>
+          </article>
+
+          <article>
+            <img class="img-fluid" src="/blog.png" alt="Aperçu La chambre à l'heure">
+            <h3>La chambre à l'heure</h3>
+            <p>Blog interactif fait avec WordPress, un coin détente pour lire mes articles. J’y partage mes veilles technologiques, mes analyses d'œuvres, mes idées de développement ainsi que diverses astuces et conseils.</p>
+          </article>
+
+          <article>
+            <img class="img-fluid" src="/giteaa.png" alt="Aperçu Gitea">
+            <h3>Gitea</h3>
+            <p>Instance de Gitea, une forge logicielle légère et rapide. Elle permet de gérer mes dépôts Git en toute autonomie, sans dépendre de services externes. Création de projets, gestion de tickets, suivi des contributions.</p>
+          </article>
+
+          <article>
+            <img class="img-fluid" src="/p5x.png" alt="Aperçu P5X-Data">
+            <h3>P5X-Data</h3>
+            <p>Site sous Astro qui recense les personnages de Persona 5: The Phantom X, et propose des statistiques, builds et recommandations. Ce projet personnel a été réalisé seul et en autonomie, un de mes plus grand projets.</p>
+          </article>
         </div>
-      </div>
-      <div class="col-sm-6 mb-4">
-        <div class="card bg-dark bg-opacity-50 text-white">
-          <img class="card-img-fluid" src="/exportgit.png" alt="Image du projet">
-          <div class="card-body opacity-100">
-            <h5 class="card-title">E5-ExportGitlab</h5>
-            <p class="card-text">
-              L'application simplifie l'exportation des issues d'un projet, 
-              permettant de les télécharger au format PDF. 
-              Le projet a été réalisé pendant ma période de formation à la Direction du Numérique de l'Université de Strasbourg.
-            </p>
-            <a href="/documentation-export" class="btn btn-outline-light">Documentation<img class="icon" src="/pages.svg" alt=""></a>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6 mb-4">
-        <div class="card bg-dark bg-opacity-50 text-white">
-          <img class="card-img-top" src="/blog.png" alt="Image du projet">
-          <div class="card-body opacity-100">
-            <h5 class="card-title">La chambre à l'heure</h5>
-            <p class="card-text">
-              Blog interactif fait avec WordPress, un coin détente pour lire mes articles. 
-              J’y partage mes veilles technologiques, mes analyses d'œuvres, 
-              mes idées de développement ainsi que diverses astuces et conseils.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6 mb-4">
-        <div class="card bg-dark bg-opacity-50 text-white">
-          <img class="card-img-top" src="/giteaa.png" alt="Image du projet">
-          <div class="card-body opacity-100">
-            <h5 class="card-title">Gitea</h5>
-            <p class="card-text">
-              Instance de Gitea, une forge logicielle légère et rapide.
-              Elle permet de gérer mes dépôts Git en toute autonomie, sans dépendre de services externes.
-              Création de projets, gestion de tickets, suivi des contributions.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6 mb-4">
-        <div class="card bg-dark bg-opacity-50 text-white">
-          <img class="card-img-top" src="/p5x.png" alt="Image du projet">
-          <div class="card-body opacity-100">
-            <h5 class="card-title">P5X-Data</h5>
-            <p class="card-text">
-              Site sous Astro qui recense les personnages de Persona 5: The Phantom X,
-              et propose des statistiques, builds et recommandations.
-              Ce projet personnel a été réalisé seul et en autonomie, un de mes plus grand projets.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer>
-      <div class="container m-5 mx-auto text-center">
-        <p>© 2025 Orabis</p>
-      </div>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.8.1/tsparticles.bundle.min.js"></script>
+      </main>
+
+      <footer>
+        <p>© 2026 Orabis</p>
+      </footer>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
